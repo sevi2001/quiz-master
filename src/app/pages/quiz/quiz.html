@@ -1,0 +1,153 @@
+
+<div class="quiz-page">
+
+  <header class="quiz-header">
+    <a href="/" class="quiz-logo">✦ QuizMaster</a>
+    <span class="live-label">● LIVE QUIZ</span>
+  </header>
+
+  <main class="quiz-container">
+
+    @if (!completed) {
+
+      <div class="quiz-top">
+        <div>
+          <span class="eyebrow">YOUR CHALLENGE</span>
+       <h1>{{ categoryName }} Quiz</h1>
+        </div>
+
+        <div class="timer" [class.urgent]="timeLeft <= 5">
+          <span>⏱</span> {{ timeLeft }}s
+        </div>
+      </div>
+
+      <div class="progress-info">
+        <span>
+          Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+        </span>
+        <span>{{ progress }}% completed</span>
+      </div>
+
+      <div class="progress-track">
+        <div
+          class="progress-fill"
+          [style.width.%]="progress">
+        </div>
+      </div>
+
+      <section class="question-card">
+
+        <span class="question-number">
+          QUESTION {{ currentQuestionIndex + 1 }}
+        </span>
+
+        <h2>{{ questions[currentQuestionIndex].question }}</h2>
+
+        <div class="answers">
+
+          @for (
+            option of questions[currentQuestionIndex].options;
+            track option;
+            let i = $index
+          ) {
+
+            <button
+              class="answer-option"
+              [class.selected]="selectedAnswer === option"
+              [class.correct]="selectedAnswer !== null && option === questions[currentQuestionIndex].answer"
+              [class.wrong]="selectedAnswer === option && option !== questions[currentQuestionIndex].answer"
+              [disabled]="selectedAnswer !== null"
+              (click)="selectAnswer(option)">
+
+              <span class="answer-letter">
+                {{ i + 1 }}
+              </span>
+
+              {{ option }}
+
+              @if (
+                selectedAnswer !== null &&
+                option === questions[currentQuestionIndex].answer
+              ) {
+                <span class="check-mark">✓</span>
+              }
+
+              @if (
+                selectedAnswer === option &&
+                option !== questions[currentQuestionIndex].answer
+              ) {
+                <span class="wrong-mark">✕</span>
+              }
+
+            </button>
+
+          }
+
+        </div>
+
+        @if (selectedAnswer !== null) {
+
+          <div
+            class="answer-feedback"
+            [class.feedback-correct]="isCorrect"
+            [class.feedback-wrong]="!isCorrect">
+
+            @if (isCorrect) {
+              🎉 Excellent! That's the correct answer!
+            } @else {
+              💡 Not quite! The correct answer is:
+              <strong>
+                {{ questions[currentQuestionIndex].answer }}
+              </strong>
+            }
+
+          </div>
+
+        }
+
+        <div class="question-footer">
+
+          <span>⭐ Score: {{ score }}</span>
+
+          <button
+            class="next-button"
+            [disabled]="selectedAnswer === null"
+            (click)="nextQuestion()">
+
+            {{
+              currentQuestionIndex === questions.length - 1
+                ? 'Finish Quiz'
+                : 'Next Question →'
+            }}
+
+          </button>
+
+        </div>
+
+      </section>
+
+    } @else {
+
+      <section class="completed-card">
+
+        <div class="completed-icon">🏆</div>
+
+        <span class="eyebrow">CHALLENGE COMPLETED</span>
+
+        <h1>Amazing Work!</h1>
+
+        <p>
+          You scored {{ score }} out of {{ questions.length }}.
+        </p>
+
+        <a href="/" class="next-button">
+          Back to Home →
+        </a>
+
+      </section>
+
+    }
+
+  </main>
+
+</div>

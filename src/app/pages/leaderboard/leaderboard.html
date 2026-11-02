@@ -1,0 +1,105 @@
+
+<div class="leaderboard-page">
+
+  <nav class="navbar">
+    <a href="/" class="logo">✦ QuizMaster</a>
+    <a href="/" class="back-link">← Back to Home</a>
+  </nav>
+
+  <main class="leaderboard-container">
+
+    <div class="heading">
+      <span class="eyebrow">THE HALL OF FAME</span>
+      <h1>Leaderboard <span>🏆</span></h1>
+      <p>Meet the brightest minds and top quiz champions!</p>
+    </div>
+
+    <!-- Winner podium -->
+    <section class="podium">
+
+      <div class="winner second">
+        <div class="avatar silver">👩🏻</div>
+        <span class="medal">🥈</span>
+        <h3>Emma</h3>
+        <p>8,750 XP</p>
+        <div class="podium-block">02</div>
+      </div>
+
+      <div class="winner first">
+        <div class="crown">👑</div>
+        <div class="avatar gold">👨🏻</div>
+        <span class="medal">🥇</span>
+        <h3>Alex</h3>
+        <p>9,850 XP</p>
+        <div class="podium-block">01</div>
+      </div>
+
+      <div class="winner third">
+        <div class="avatar bronze">👩🏽</div>
+        <span class="medal">🥉</span>
+        <h3>Sophia</h3>
+        <p>7,920 XP</p>
+        <div class="podium-block">03</div>
+      </div>
+
+    </section>
+
+    <!-- Search and filter -->
+    <section class="ranking-section">
+
+      <div class="ranking-heading">
+        <div>
+          <span class="eyebrow">TOP PERFORMERS</span>
+          <h2>Player Rankings</h2>
+        </div>
+
+        <select (change)="changeSort($event)">
+          <option value="highest">Highest Score</option>
+          <option value="lowest">Lowest Score</option>
+          <option value="name">Name A-Z</option>
+        </select>
+      </div>
+
+      <input
+        type="text"
+        class="search-box"
+        placeholder="🔍 Search players..."
+        (input)="searchPlayers($event)"
+      />
+
+      <div class="player-list">
+
+        @for (player of filteredPlayers; track player.name; let i = $index) {
+          <div class="player-card" [style.animation-delay]="i * 0.1 + 's'">
+
+            <div class="rank">{{ i + 1 }}</div>
+
+            <div class="player-avatar">{{ player.avatar }}</div>
+
+            <div class="player-info">
+              <h3>{{ player.name }}</h3>
+              <span>{{ player.level }}</span>
+            </div>
+
+            <div class="player-score">
+              <strong>{{ player.score.toLocaleString() }}</strong>
+              <span>XP ⭐</span>
+            </div>
+
+          </div>
+        }
+
+        @if (filteredPlayers.length === 0) {
+          <div class="empty-state">
+            <span>🔍</span>
+            <h3>No players found</h3>
+            <p>Try searching with another name.</p>
+          </div>
+        }
+
+      </div>
+
+    </section>
+
+  </main>
+</div>

@@ -1,0 +1,87 @@
+
+<div class="result-page">
+
+  <div class="particles">
+    <span>✦</span>
+    <span>✨</span>
+    <span>✧</span>
+    <span>⭐</span>
+    <span>✦</span>
+    <span>✨</span>
+  </div>
+
+  <nav class="result-navbar">
+    <a href="/" class="logo">✦ QuizMaster</a>
+    <span class="completed-label">✓ QUIZ COMPLETED</span>
+  </nav>
+
+  <main class="result-container">
+
+    <div class="celebration">🏆</div>
+
+    <span class="eyebrow">YOUR RESULTS ARE HERE</span>
+
+    <h1>
+      {{ message }}
+    </h1>
+
+    <p class="subtitle">
+      You've completed your knowledge challenge!
+    </p>
+
+    <section class="score-card">
+
+      <div class="score-circle" [style.--score]="percentage + '%'">
+        <div class="circle-inner">
+          <strong>{{ displayedPercentage }}%</strong>
+          <span>Your Score</span>
+        </div>
+      </div>
+
+      <h2>{{ score }} / {{ total }}</h2>
+      <p class="score-description">Correct Answers</p>
+
+      <div class="score-stats">
+        <div class="stat correct">
+          <span>✓</span>
+          <strong>{{ score }}</strong>
+          <small>Correct</small>
+        </div>
+
+        <div class="stat incorrect">
+          <span>✕</span>
+          <strong>{{ total - score }}</strong>
+          <small>Incorrect</small>
+        </div>
+
+        <div class="stat total">
+          <span>🎯</span>
+          <strong>{{ total }}</strong>
+          <small>Total</small>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="result-message">
+      <span>💜</span>
+      {{ feedback }}
+    </div>
+
+    <div class="result-buttons">
+      <a href="/quiz" class="retake-btn">
+        ↻ Retake Quiz
+      </a>
+
+      <a href="/" class="home-btn">
+        ← Back to Home
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    Keep learning. Keep growing. Keep shining! ✨
+  </footer>
+
+</div>
