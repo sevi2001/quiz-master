@@ -1,59 +1,108 @@
-# QuizMaster
+# 🎯 QuizMaster – Interactive Quiz Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.29.
+An interactive and engaging quiz application built with **Angular**, featuring multiple quiz categories, difficulty levels, countdown timer, instant feedback, and a results dashboard.
 
-## Development server
+<p align="center">
+  <a href="https://quiz-master-nu-gules.vercel.app/">
+    <img src="https://img.shields.io/badge/Live%20Demo-Visit%20Website-8B5CF6?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"/>
+  </a>
+  <a href="https://github.com/sevi2001/quiz-master">
+    <img src="https://img.shields.io/badge/GitHub-View%20Source%20Code-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repository"/>
+  </a>
+</p>
 
-To start a local development server, run:
+---
+
+## 🌐 Project Links
+
+- **Live Website:** https://quiz-master-nu-gules.vercel.app/
+- **GitHub Repository:** https://github.com/sevi2001/quiz-master
+
+## ✨ Features
+
+- 🏠 Interactive Dashboard
+- 📚 Multiple Quiz Categories:
+  - Technology
+  - Science
+  - General Knowledge
+  - Mathematics
+- 🎚️ Three Difficulty Levels: Easy, Medium, Hard
+- 📋 Quiz Instructions
+- ⏱️ Countdown Timer
+- 📊 Quiz Progress Tracking
+- ✅ Instant Answer Feedback
+- 🏆 Results Dashboard with Score and Percentage
+- 🥇 Leaderboard
+- 👤 Player Profile
+- 🔊 Sound Effects
+- 🌙 Theme Support
+- 💾 Local Storage for supported player and quiz data
+
+## 🛠️ Technologies Used
+
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+- JavaScript
+- Browser Local Storage
+- Git and GitHub
+- Vercel
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+- Angular CLI
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sevi2001/quiz-master.git
+```
+
+### 2. Navigate to the Project
+
+```bash
+cd quiz-master
+```
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+### 4. Run the Application
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open your browser at:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+http://localhost:4200/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## 🏗️ Production Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🌍 Deployment
 
-## Running unit tests
+This application is deployed using **Vercel**.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+🔗 https://quiz-master-nu-gules.vercel.app/
 
-```bash
-ng test
-```
+## 👩‍💻 Developer
 
-## Running end-to-end tests
+Developed with ❤️ using Angular.
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+⭐ If you like this project, consider giving the repository a star!
