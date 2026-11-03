@@ -1,0 +1,206 @@
+<div class="profile-page">
+
+  <!-- Background Decorations -->
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+
+    <a href="/" class="logo">✦ QuizMaster</a>
+
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/leaderboard">🏆 Leaderboard</a>
+      <a href="/profile" class="active">My Profile</a>
+    </div>
+
+  </nav>
+
+  <main class="profile-container">
+
+    <!-- Page Heading -->
+    <div class="page-heading">
+      <span class="eyebrow">YOUR PERSONAL SPACE</span>
+      <h1>Player <span>Profile</span> 👤</h1>
+      <p>Track your progress and celebrate your achievements!</p>
+    </div>
+
+    <!-- Profile Hero -->
+    <section class="profile-hero">
+
+      <div class="profile-avatar">
+        {{ playerAvatar }}
+        <span class="online-dot"></span>
+      </div>
+
+      <div class="profile-details">
+        <span class="profile-label">WELCOME BACK</span>
+
+        <h2>{{ playerName }}</h2>
+
+        <span class="level-badge">
+          ✨ {{ playerLevel }}
+        </span>
+
+        <p>Your quiz journey continues. Keep learning and keep winning!</p>
+      </div>
+
+      <div class="profile-trophy">🏆</div>
+
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-icon purple">⭐</div>
+        <span>Total XP</span>
+        <h2>{{ totalXP }}</h2>
+        <small>Points earned</small>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue">📝</div>
+        <span>Quizzes Played</span>
+        <h2>{{ totalQuizzes }}</h2>
+        <small>Total attempts</small>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon pink">🎯</div>
+        <span>Average Score</span>
+        <h2>{{ averageScore }}%</h2>
+        <small>Overall accuracy</small>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon gold">🏅</div>
+        <span>Best Score</span>
+        <h2>{{ bestScore }}</h2>
+        <small>Highest quiz score</small>
+      </div>
+
+    </section>
+
+    <!-- Achievements -->
+    <section class="content-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">YOUR MILESTONES</span>
+          <h2>Achievements 🏅</h2>
+        </div>
+
+        <span class="achievement-count">
+          {{ unlockedAchievementsCount }}/{{ achievements.length }} Unlocked
+        </span>
+      </div>
+
+      <div class="achievement-grid">
+
+        @for (achievement of achievements; track achievement.title) {
+
+          <div
+            class="achievement-card"
+            [class.unlocked]="achievement.unlocked"
+            [class.locked]="!achievement.unlocked">
+
+            <div class="achievement-icon">
+              {{ achievement.icon }}
+            </div>
+
+            <div class="achievement-info">
+              <h3>{{ achievement.title }}</h3>
+              <p>{{ achievement.description }}</p>
+
+              @if (achievement.unlocked) {
+                <span class="unlocked-label">✓ UNLOCKED</span>
+              } @else {
+                <span class="locked-label">🔒 LOCKED</span>
+              }
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+    <!-- Quiz History -->
+    <section class="content-section history-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">YOUR JOURNEY</span>
+          <h2>Recent Quiz History 📚</h2>
+        </div>
+
+        <span class="history-count">
+          {{ totalQuizzes }} Quizzes
+        </span>
+      </div>
+
+      @if (quizResults.length > 0) {
+
+        <div class="history-list">
+
+          @for (
+            result of quizResults.slice().reverse();
+            track $index
+          ) {
+
+            <div class="history-card">
+
+              <div class="history-icon">
+                🧠
+              </div>
+
+              <div class="history-info">
+                <h3>{{ result.category | titlecase }}</h3>
+
+                <p>
+                  {{ result.difficulty || 'Standard' }} Level
+                  · {{ formatDate(result.date) }}
+                </p>
+              </div>
+
+              <div class="history-score">
+                <strong>{{ result.score }}/{{ result.total }}</strong>
+                <span>XP ⭐</span>
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      } @else {
+
+        <div class="empty-history">
+          <span>📚</span>
+          <h3>No quizzes yet!</h3>
+          <p>Your quiz history will appear here after your first quiz.</p>
+          <a href="/quiz" class="start-btn">Start a Quiz →</a>
+        </div>
+
+      }
+
+    </section>
+
+    <!-- Footer Actions -->
+    <div class="profile-actions">
+      <a href="/quiz" class="primary-btn">🚀 Play a Quiz</a>
+      <a href="/leaderboard" class="secondary-btn">🏆 View Leaderboard</a>
+    </div>
+
+  </main>
+
+  <footer class="profile-footer">
+    Made with 💜 for Quiz Champions
+  </footer>
+
+</div>
