@@ -385,3 +385,365 @@ footer {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Quiz Information */
+
+.quiz-info {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+
+.info-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.info-badge > span {
+  font-size: 25px;
+}
+
+.info-badge div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-badge small {
+  font-size: 11px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-badge strong {
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.category-badge {
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+.difficulty-badge {
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+/* Result Buttons */
+
+.result-buttons button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+.retake-btn,
+.home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 15px 28px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.retake-btn {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: white;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+}
+
+.retake-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.45);
+}
+
+.home-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.home-btn:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  .quiz-info {
+    gap: 10px;
+  }
+
+  .info-badge {
+    padding: 12px 16px;
+  }
+
+  .result-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .retake-btn,
+  .home-btn {
+    width: 100%;
+  }
+}
+
+
+/* =================================
+   QUIZ MASTER CELEBRATION EFFECTS
+================================= */
+
+/* Confetti container */
+
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Falling confetti */
+
+.particles::before,
+.particles::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+
+  box-shadow:
+    -280px 100px #c084fc,
+    -180px 250px #facc15,
+    -80px 50px #86efac,
+    50px 180px #f472b6,
+    160px 80px #60a5fa,
+    260px 300px #facc15,
+    -320px 450px #60a5fa,
+    320px 500px #c084fc,
+    -120px 600px #f472b6,
+    200px 700px #86efac,
+    80px 400px #facc15,
+    -240px 750px #c084fc,
+    300px 900px #f472b6,
+    -50px 1000px #60a5fa,
+    140px 1100px #facc15;
+
+  animation: confettiFall 7s linear infinite;
+}
+
+.particles::after {
+  left: 35%;
+  width: 7px;
+  height: 12px;
+
+  box-shadow:
+    -200px 150px #f472b6,
+    -100px 350px #60a5fa,
+    100px 100px #facc15,
+    220px 250px #86efac,
+    300px 450px #c084fc,
+    -300px 550px #facc15,
+    150px 650px #f472b6,
+    -150px 800px #60a5fa,
+    250px 950px #86efac,
+    -50px 1050px #c084fc;
+
+  animation-delay: 2s;
+  animation-duration: 9s;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Trophy celebration */
+
+.celebration {
+  animation: trophyCelebration 2s ease-in-out infinite;
+}
+
+@keyframes trophyCelebration {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg) scale(1);
+    filter: drop-shadow(0 0 15px #facc1570);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(5deg) scale(1.12);
+    filter: drop-shadow(0 0 35px #facc15);
+  }
+}
+
+/* Glowing score circle */
+
+.score-circle {
+  animation:
+    circleAppear 1s ease,
+    scoreGlow 3s ease-in-out 1s infinite;
+}
+
+@keyframes scoreGlow {
+  0%, 100% {
+    box-shadow: 0 0 25px #a855f730;
+  }
+
+  50% {
+    box-shadow:
+      0 0 35px #c084fc90,
+      0 0 65px #9333ea50;
+  }
+}
+
+/* Animated result message */
+
+.result-message {
+  animation: messageAppear 1s ease 0.5s both;
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Quiz information badges */
+
+.info-badge {
+  animation: badgeAppear 0.8s ease both;
+}
+
+.category-badge {
+  animation-delay: 0.2s;
+}
+
+.difficulty-badge {
+  animation-delay: 0.4s;
+}
+
+@keyframes badgeAppear {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button hover animation */
+
+.retake-btn,
+.home-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.retake-btn:hover,
+.home-btn:hover {
+  transform: translateY(-5px) scale(1.03);
+}
+
+/* Keep content above confetti */
+
+.result-navbar,
+.result-container,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile adjustments */
+
+@media (max-width: 600px) {
+  .celebration {
+    font-size: 65px;
+  }
+
+  .particles::before,
+  .particles::after {
+    animation-duration: 10s;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .particles::before,
+  .particles::after,
+  .celebration,
+  .score-circle,
+  .result-message,
+  .info-badge {
+    animation: none !important;
+  }
+}
+
+/* Celebration Music Button */
+.celebration-btn {
+  display: block;
+  margin: 25px auto 20px;
+  padding: 14px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
+  transition: all 0.3s ease;
+}
+
+.celebration-btn:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.5);
+}
+
+.celebration-btn:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 600px) {
+  .celebration-btn {
+    width: 90%;
+    max-width: 300px;
+  }
+}

@@ -1,48 +1,87 @@
 
 <div class="quiz-page">
 
+  <!-- Quiz Header -->
   <header class="quiz-header">
+
     <a href="/" class="quiz-logo">✦ QuizMaster</a>
-    <span class="live-label">● LIVE QUIZ</span>
+
+    <div class="header-actions">
+
+      <span class="live-label">● LIVE QUIZ</span>
+
+      <!-- Sound Toggle -->
+      <button
+        type="button"
+        class="sound-toggle"
+        (click)="toggleSound()"
+        [attr.aria-label]="soundEnabled ? 'Mute sounds' : 'Enable sounds'">
+
+        {{ soundEnabled ? '🔊 Sound ON' : '🔇 Sound OFF' }}
+
+      </button>
+
+    </div>
+
   </header>
 
   <main class="quiz-container">
 
     @if (!completed) {
 
+      <!-- Quiz Information -->
       <div class="quiz-top">
+
         <div>
           <span class="eyebrow">YOUR CHALLENGE</span>
-       <h1>{{ categoryName }} Quiz</h1>
+
+          <h1>{{ categoryName }} Quiz</h1>
+
+          <span class="difficulty-label">
+            ⚡ {{ difficulty | titlecase }} Level
+          </span>
         </div>
 
+        <!-- Timer -->
         <div class="timer" [class.urgent]="timeLeft <= 5">
           <span>⏱</span> {{ timeLeft }}s
         </div>
+
       </div>
 
+      <!-- Progress Information -->
       <div class="progress-info">
+
         <span>
           Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
         </span>
-        <span>{{ progress }}% completed</span>
+
+        <span>{{ progress | number:'1.0-0' }}% completed</span>
+
       </div>
 
+      <!-- Progress Bar -->
       <div class="progress-track">
+
         <div
           class="progress-fill"
           [style.width.%]="progress">
         </div>
+
       </div>
 
+      <!-- Question Card -->
       <section class="question-card">
 
         <span class="question-number">
           QUESTION {{ currentQuestionIndex + 1 }}
         </span>
 
-        <h2>{{ questions[currentQuestionIndex].question }}</h2>
+        <h2>
+          {{ questions[currentQuestionIndex].question }}
+        </h2>
 
+        <!-- Answer Options -->
         <div class="answers">
 
           @for (
@@ -52,6 +91,7 @@
           ) {
 
             <button
+              type="button"
               class="answer-option"
               [class.selected]="selectedAnswer === option"
               [class.correct]="selectedAnswer !== null && option === questions[currentQuestionIndex].answer"
@@ -63,20 +103,26 @@
                 {{ i + 1 }}
               </span>
 
-              {{ option }}
+              <span class="answer-text">
+                {{ option }}
+              </span>
 
               @if (
                 selectedAnswer !== null &&
                 option === questions[currentQuestionIndex].answer
               ) {
+
                 <span class="check-mark">✓</span>
+
               }
 
               @if (
                 selectedAnswer === option &&
                 option !== questions[currentQuestionIndex].answer
               ) {
+
                 <span class="wrong-mark">✕</span>
+
               }
 
             </button>
@@ -85,6 +131,7 @@
 
         </div>
 
+        <!-- Answer Feedback -->
         @if (selectedAnswer !== null) {
 
           <div
@@ -93,30 +140,37 @@
             [class.feedback-wrong]="!isCorrect">
 
             @if (isCorrect) {
+
               🎉 Excellent! That's the correct answer!
+
             } @else {
+
               💡 Not quite! The correct answer is:
+
               <strong>
                 {{ questions[currentQuestionIndex].answer }}
               </strong>
+
             }
 
           </div>
 
         }
 
+        <!-- Question Footer -->
         <div class="question-footer">
 
           <span>⭐ Score: {{ score }}</span>
 
           <button
+            type="button"
             class="next-button"
             [disabled]="selectedAnswer === null"
             (click)="nextQuestion()">
 
             {{
               currentQuestionIndex === questions.length - 1
-                ? 'Finish Quiz'
+                ? 'Finish Quiz 🏆'
                 : 'Next Question →'
             }}
 
@@ -128,6 +182,7 @@
 
     } @else {
 
+      <!-- Completed Section -->
       <section class="completed-card">
 
         <div class="completed-icon">🏆</div>
@@ -140,9 +195,14 @@
           You scored {{ score }} out of {{ questions.length }}.
         </p>
 
-        <a href="/" class="next-button">
-          Back to Home →
-        </a>
+        <button
+          type="button"
+          class="next-button"
+          (click)="goToResults()">
+
+          View My Results →
+
+        </button>
 
       </section>
 

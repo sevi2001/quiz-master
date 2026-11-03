@@ -21,7 +21,9 @@
     <a href="/leaderboard">Leaderboard</a>
     </div>
 
-    <button class="profile-btn">👤 Profile</button>
+    <a href="#player-profile" class="profile-btn">
+  👤 Profile
+</a>
   </nav>
 
   <!-- Hero section -->
@@ -52,6 +54,41 @@
           Explore Categories
         </button>
       </div>
+
+      
+<div class="profile-card" id="player-profile">
+
+  <div class="profile-heading">
+    <span class="profile-icon">👤</span>
+    <div>
+      <h3>Your Player Profile</h3>
+      <p>Enter your name to join QuizMaster!</p>
+    </div>
+  </div>
+
+  <div class="profile-input-group">
+    <input
+      type="text"
+      placeholder="Enter your name..."
+      [value]="playerName"
+      (input)="updatePlayerName($event)"
+      maxlength="25"
+    />
+
+    <button
+      class="save-profile-btn"
+      (click)="savePlayerName()">
+      Save Profile ✨
+    </button>
+  </div>
+
+  @if (playerName.length >= 2) {
+    <p class="profile-welcome">
+      🎉 Welcome back, {{ playerName }}!
+    </p>
+  }
+
+</div>
 
       <div class="stats">
         <div>
@@ -102,34 +139,89 @@
       <a>View All →</a>
     </div>
 
+    
+<div class="difficulty-section">
+
+  <div class="difficulty-heading">
+    <span>⚡ CHOOSE YOUR CHALLENGE</span>
+    <h2>Select Difficulty</h2>
+    <p>How challenging do you want your quiz to be?</p>
+  </div>
+
+  <div class="difficulty-grid">
+
+    <button
+      class="difficulty-card easy"
+      [class.selected]="selectedDifficulty === 'easy'"
+      (click)="selectDifficulty('easy')">
+
+      <span class="difficulty-icon">🟢</span>
+      <h3>Easy</h3>
+      <p>20 seconds per question</p>
+      <span class="difficulty-label">Beginner</span>
+
+    </button>
+
+    <button
+      class="difficulty-card medium"
+      [class.selected]="selectedDifficulty === 'medium'"
+      (click)="selectDifficulty('medium')">
+
+      <span class="difficulty-icon">🟡</span>
+      <h3>Medium</h3>
+      <p>15 seconds per question</p>
+      <span class="difficulty-label">Intermediate</span>
+
+    </button>
+
+    <button
+      class="difficulty-card hard"
+      [class.selected]="selectedDifficulty === 'hard'"
+      (click)="selectDifficulty('hard')">
+
+      <span class="difficulty-icon">🔴</span>
+      <h3>Hard</h3>
+      <p>10 seconds per question</p>
+      <span class="difficulty-label">Expert</span>
+
+    </button>
+
+  </div>
+
+</div>
+
+
     <div class="category-grid">
       
-<a href="/quiz?category=technology" 
-       class="category-card">
+<a
+  [href]="'/quiz?category=technology&difficulty=' + selectedDifficulty"
+  class="category-card">
         <div class="category-icon">💻</div>
         <h3>Technology</h3>
         <p>Test your tech knowledge</p>
         <span>25 Quizzes →</span>
     </a>
 
-    <a href="/quiz?category=science"
-       class="category-card">
+   <a
+  [href]="'/quiz?category=science&difficulty=' + selectedDifficulty"
+  class="category-card">
         <div class="category-icon">🧪</div>
         <h3>Science</h3>
         <p>Explore the world of science</p>
         <span>18 Quizzes →</span>
   </a>
 
-      <a href="/quiz?category=general-knowledge"
-       class="category-card">
+    <a
+  [href]="'/quiz?category=general&difficulty=' + selectedDifficulty"
+  class="category-card">
         <div class="category-icon">🌍</div>
         <h3>General Knowledge</h3>
         <p>Challenge your brain</p>
         <span>32 Quizzes →</span>
 </a>
-
-      <a href="/quiz?category=mathematics"
-       class="category-card">
+<a
+  [href]="'/quiz?category=mathematics&difficulty=' + selectedDifficulty"
+  class="category-card">
         <div class="category-icon">🧮</div>
         <h3>Mathematics</h3>
         <p>Make numbers exciting</p>

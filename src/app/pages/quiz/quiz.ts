@@ -1,6 +1,6 @@
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { TitleCasePipe, DecimalPipe } from '@angular/common';
 
 interface Question {
   question: string;
@@ -8,15 +8,33 @@ interface Question {
   answer: string;
 }
 
+interface QuizResult {
+  name: string;
+  avatar: string;
+  score: number;
+  total: number;
+  category: string;
+  difficulty: string;
+  level: string;
+  date: string;
+}
+
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [],
+  imports: [TitleCasePipe, DecimalPipe],
   templateUrl: './quiz.html',
   styleUrl: './quiz.css'
 })
 export class Quiz implements OnInit, OnDestroy {
 
+  difficulty = 'easy';
+
+  // Sound settings
+  soundEnabled = true;
+  private audioContext?: AudioContext;
+
+  // Question sets
   questionSets: Record<string, Question[]> = {
 
     technology: [
@@ -140,7 +158,6 @@ export class Quiz implements OnInit, OnDestroy {
         answer: '6'
       }
     ]
-
   };
 
   questions: Question[] = this.questionSets['technology'];
@@ -149,8 +166,9 @@ export class Quiz implements OnInit, OnDestroy {
 
   currentQuestionIndex = 0;
   selectedAnswer: string | null = null;
+
   score = 0;
-  timeLeft = 15;
+  timeLeft = 20;
   completed = false;
 
   private timerId?: ReturnType<typeof setInterval>;
@@ -160,54 +178,234 @@ export class Quiz implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
+  // Progress percentage
   get progress(): number {
-    return ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
+    return (
+      ((this.currentQuestionIndex + 1) / this.questions.length) * 100
+    );
   }
 
+  // Check answer
   get isCorrect(): boolean {
     return this.selectedAnswer ===
       this.questions[this.currentQuestionIndex].answer;
   }
 
+  // Time limit based on difficulty
+  get timeLimit(): number {
+    switch (this.difficulty) {
+      case 'easy':
+        return 20;
+
+      case 'medium':
+        return 15;
+
+      case 'hard':
+        return 10;
+
+      default:
+        return 20;
+    }
+  }
+
+  // Initialize quiz
   ngOnInit(): void {
 
     const category =
       this.route.snapshot.queryParamMap.get('category') || 'technology';
 
+    const normalizedCategory =
+      category === 'general-knowledge' ? 'general' : category.toLowerCase();
+
     this.questions =
-      this.questionSets[category] || this.questionSets['technology'];
+      this.questionSets[normalizedCategory] ||
+      this.questionSets['technology'];
 
     this.categoryName =
-      category.charAt(0).toUpperCase() + category.slice(1);
+      normalizedCategory.charAt(0).toUpperCase() +
+      normalizedCategory.slice(1);
+
+    const urlDifficulty =
+      this.route.snapshot.queryParamMap.get('difficulty');
+
+    const savedDifficulty =
+      localStorage.getItem('quizDifficulty') || 'easy';
+
+    const selectedDifficulty =
+      urlDifficulty || savedDifficulty;
+
+    if (
+      selectedDifficulty === 'easy' ||
+      selectedDifficulty === 'medium' ||
+      selectedDifficulty === 'hard'
+    ) {
+      this.difficulty = selectedDifficulty;
+    } else {
+      this.difficulty = 'easy';
+    }
+
+    localStorage.setItem('quizDifficulty', this.difficulty);
+
+    this.timeLeft = this.timeLimit;
 
     this.startTimer();
   }
 
+  // Enable or disable quiz sounds
+  toggleSound(): void {
+    this.soundEnabled = !this.soundEnabled;
+
+    if (this.soundEnabled) {
+      this.playSound('correct');
+    }
+  }
+
+  // Play sound effects using Web Audio API
+  playSound(
+    type: 'correct' | 'wrong' | 'timeout' | 'complete'
+  ): void {
+
+    if (!this.soundEnabled) {
+      return;
+    }
+
+    try {
+
+      if (!this.audioContext) {
+        this.audioContext = new AudioContext();
+      }
+
+      const context = this.audioContext;
+
+      if (context.state === 'suspended') {
+        context.resume();
+      }
+
+      const now = context.currentTime;
+
+      let frequencies: number[] = [];
+      let durations: number[] = [];
+      let gap = 0.08;
+
+      switch (type) {
+
+        case 'correct':
+          frequencies = [660, 880];
+          durations = [0.12, 0.18];
+          break;
+
+        case 'wrong':
+          frequencies = [220, 160];
+          durations = [0.15, 0.2];
+          break;
+
+        case 'timeout':
+          frequencies = [440, 330, 220];
+          durations = [0.12, 0.12, 0.25];
+          break;
+
+        case 'complete':
+          frequencies = [523, 659, 784, 1047];
+          durations = [0.15, 0.15, 0.15, 0.35];
+          gap = 0.12;
+          break;
+      }
+
+      let startTime = now;
+
+      frequencies.forEach((frequency, index) => {
+
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
+
+        oscillator.type = 'sine';
+
+        oscillator.frequency.setValueAtTime(
+          frequency,
+          startTime
+        );
+
+        gainNode.gain.setValueAtTime(0.0001, startTime);
+
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.2,
+          startTime + 0.02
+        );
+
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.0001,
+          startTime + durations[index]
+        );
+
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + durations[index]);
+
+        startTime += durations[index] + gap;
+
+      });
+
+    } catch (error) {
+      console.warn('Unable to play sound:', error);
+    }
+  }
+
+  // Countdown timer
   startTimer(): void {
+
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
+
     this.timerId = setInterval(() => {
 
       if (this.timeLeft > 0) {
+
         this.timeLeft--;
+
       } else {
+
+        this.playSound('timeout');
         this.nextQuestion();
+
       }
 
     }, 1000);
   }
 
+  // Select answer
   selectAnswer(option: string): void {
-    if (this.selectedAnswer === null) {
-      this.selectedAnswer = option;
-    }
-  }
 
-  nextQuestion(): void {
-
-    if (this.selectedAnswer === null && this.timeLeft > 0) {
+    if (this.selectedAnswer !== null || this.completed) {
       return;
     }
 
-    clearInterval(this.timerId);
+    this.selectedAnswer = option;
+
+    if (
+      option === this.questions[this.currentQuestionIndex].answer
+    ) {
+      this.playSound('correct');
+    } else {
+      this.playSound('wrong');
+    }
+  }
+
+  // Move to next question
+  nextQuestion(): void {
+
+    if (
+      this.selectedAnswer === null &&
+      this.timeLeft > 0
+    ) {
+      return;
+    }
+
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
 
     if (
       this.selectedAnswer ===
@@ -216,55 +414,89 @@ export class Quiz implements OnInit, OnDestroy {
       this.score++;
     }
 
-    if (this.currentQuestionIndex < this.questions.length - 1) {
+    if (
+      this.currentQuestionIndex <
+      this.questions.length - 1
+    ) {
 
       this.currentQuestionIndex++;
+
       this.selectedAnswer = null;
-      this.timeLeft = 15;
+
+      this.timeLeft = this.timeLimit;
 
       this.startTimer();
 
     } else {
-this.completed = true;
 
-// Get previous quiz results
-const savedResults = JSON.parse(
-  localStorage.getItem('quizResults') || '[]'
-);
+      this.completed = true;
 
-// Create a new result
-const newResult = {
-  name: 'You',
-  avatar: '👩🏻',
-  score: this.score,
-  total: this.questions.length,
-  category: this.categoryName,
-  level: this.score >= 4 ? 'Quiz Champion' : 'Quiz Explorer',
-  date: new Date().toISOString()
-};
+      // Celebration sound
+      this.playSound('complete');
 
-// Save the new result
-savedResults.push(newResult);
+      const savedResults: QuizResult[] = JSON.parse(
+        localStorage.getItem('quizResults') || '[]'
+      );
 
-localStorage.setItem(
-  'quizResults',
-  JSON.stringify(savedResults)
-);
+      const playerName =
+        localStorage.getItem('playerName') || 'Guest';
 
-// Navigate to results page
-this.router.navigate(['/result'], {
-  state: {
-    score: this.score,
-    total: this.questions.length,
-    category: this.categoryName
-  }
-});
+      const newResult: QuizResult = {
+        name: playerName,
+        avatar: '👤',
+        score: this.score,
+        total: this.questions.length,
+        category: this.categoryName,
+        difficulty: this.difficulty,
+        level:
+          this.score >= 4
+            ? 'Quiz Champion'
+            : 'Quiz Explorer',
+        date: new Date().toISOString()
+      };
+
+      savedResults.push(newResult);
+
+      localStorage.setItem(
+        'quizResults',
+        JSON.stringify(savedResults)
+      );
+
+      this.router.navigate(['/result'], {
+        state: {
+          score: this.score,
+          total: this.questions.length,
+          category: this.categoryName,
+          difficulty: this.difficulty
+        }
+      });
 
     }
   }
 
+  // Navigate to results page
+  goToResults(): void {
+    this.router.navigate(['/result'], {
+      state: {
+        score: this.score,
+        total: this.questions.length,
+        category: this.categoryName,
+        difficulty: this.difficulty
+      }
+    });
+  }
+
+  // Clean up timer and audio
   ngOnDestroy(): void {
-    clearInterval(this.timerId);
+
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
+
+    if (this.audioContext) {
+      this.audioContext.close();
+    }
+
   }
 
 }

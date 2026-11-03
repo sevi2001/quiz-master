@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 
 interface Player {
@@ -28,68 +27,85 @@ interface QuizResult {
 export class Leaderboard implements OnInit {
 
   players: Player[] = [];
-
   filteredPlayers: Player[] = [];
 
   sortType = 'highest';
   searchText = '';
 
+  // Get the top three players
+  get topPlayers(): Player[] {
+    return [...this.players]
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
+  }
+
   ngOnInit(): void {
     this.loadPlayers();
   }
 
+  // Load quiz results from localStorage
   loadPlayers(): void {
 
-    const savedResults: QuizResult[] = JSON.parse(
-      localStorage.getItem('quizResults') || '[]'
-    );
+    let savedResults: QuizResult[] = [];
 
-    // Group quiz attempts by player name
+    try {
+      savedResults = JSON.parse(
+        localStorage.getItem('quizResults') || '[]'
+      );
+    } catch (error) {
+      console.error('Unable to load quiz results:', error);
+    }
+
     const playerScores: Record<string, Player> = {};
 
     savedResults.forEach(result => {
 
-      if (!playerScores[result.name]) {
-        playerScores[result.name] = {
-          name: result.name,
-          avatar: result.avatar,
+      const playerName = result.name || 'Guest';
+
+      if (!playerScores[playerName]) {
+        playerScores[playerName] = {
+          name: playerName,
+          avatar: result.avatar || '👤',
           score: 0,
-          level: result.level
+          level: 'Quiz Explorer'
         };
       }
 
-      // Add points for each correct answer
-      playerScores[result.name].score += result.score;
+      // Add correct answers from each quiz attempt
+      playerScores[playerName].score += Number(result.score) || 0;
 
       // Update player level
-      const totalScore = playerScores[result.name].score;
+      const totalScore = playerScores[playerName].score;
 
       if (totalScore >= 20) {
-        playerScores[result.name].level = 'Quiz Master';
+        playerScores[playerName].level = 'Quiz Master';
       } else if (totalScore >= 12) {
-        playerScores[result.name].level = 'Quiz Champion';
+        playerScores[playerName].level = 'Quiz Champion';
       } else if (totalScore >= 5) {
-        playerScores[result.name].level = 'Knowledge Expert';
+        playerScores[playerName].level = 'Knowledge Expert';
       } else {
-        playerScores[result.name].level = 'Quiz Explorer';
+        playerScores[playerName].level = 'Quiz Explorer';
       }
 
     });
 
-    this.players = Object.values(playerScores);
+    this.players = Object.values(playerScores)
+      .sort((a, b) => b.score - a.score);
 
     this.applyFilters();
   }
 
+  // Search players
   searchPlayers(event: Event): void {
 
     this.searchText = (
       event.target as HTMLInputElement
-    ).value.toLowerCase();
+    ).value.toLowerCase().trim();
 
     this.applyFilters();
   }
 
+  // Change sorting
   changeSort(event: Event): void {
 
     this.sortType = (
@@ -99,6 +115,7 @@ export class Leaderboard implements OnInit {
     this.applyFilters();
   }
 
+  // Apply search and sorting
   applyFilters(): void {
 
     this.filteredPlayers = this.players.filter(player =>
@@ -124,7 +141,6 @@ export class Leaderboard implements OnInit {
       );
 
     }
-
   }
 
 }

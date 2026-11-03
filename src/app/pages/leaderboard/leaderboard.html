@@ -1,6 +1,10 @@
-
 <div class="leaderboard-page">
 
+  <!-- Background Decorations -->
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <!-- Navigation -->
   <nav class="navbar">
     <a href="/" class="logo">✦ QuizMaster</a>
     <a href="/" class="back-link">← Back to Home</a>
@@ -8,73 +12,184 @@
 
   <main class="leaderboard-container">
 
+    <!-- Heading -->
     <div class="heading">
       <span class="eyebrow">THE HALL OF FAME</span>
-      <h1>Leaderboard <span>🏆</span></h1>
+
+      <h1>
+        Leaderboard
+        <span>🏆</span>
+      </h1>
+
       <p>Meet the brightest minds and top quiz champions!</p>
+
+      <div class="heading-decoration">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
 
-    <!-- Winner podium -->
-    <section class="podium">
+    @if (players.length > 0) {
 
-      <div class="winner second">
-        <div class="avatar silver">👩🏻</div>
-        <span class="medal">🥈</span>
-        <h3>Emma</h3>
-        <p>8,750 XP</p>
-        <div class="podium-block">02</div>
-      </div>
+      <!-- Winner Podium -->
+      <section class="podium-section">
 
-      <div class="winner first">
-        <div class="crown">👑</div>
-        <div class="avatar gold">👨🏻</div>
-        <span class="medal">🥇</span>
-        <h3>Alex</h3>
-        <p>9,850 XP</p>
-        <div class="podium-block">01</div>
-      </div>
+        <div class="podium-title">
+          <span>✨</span>
+          <h2>TOP CHAMPIONS</h2>
+          <span>✨</span>
+        </div>
 
-      <div class="winner third">
-        <div class="avatar bronze">👩🏽</div>
-        <span class="medal">🥉</span>
-        <h3>Sophia</h3>
-        <p>7,920 XP</p>
-        <div class="podium-block">03</div>
-      </div>
+        <section class="podium">
 
-    </section>
+          <!-- Second Place -->
+          @if (players.length >= 2) {
+            <div class="winner second">
 
-    <!-- Search and filter -->
+              <div class="winner-avatar silver">
+                {{ players[1].avatar }}
+              </div>
+
+              <span class="medal">🥈</span>
+
+              <h3>{{ players[1].name }}</h3>
+
+              <p>{{ players[1].score }} XP</p>
+
+              <div class="podium-block">
+                <strong>02</strong>
+                <small>SECOND</small>
+              </div>
+
+            </div>
+          }
+
+          <!-- First Place -->
+          <div class="winner first">
+
+            <div class="crown">👑</div>
+
+            <div class="winner-avatar gold">
+              {{ players[0].avatar }}
+            </div>
+
+            <span class="medal">🥇</span>
+
+            <h3>{{ players[0].name }}</h3>
+
+            <p>{{ players[0].score }} XP</p>
+
+            <div class="podium-block">
+              <strong>01</strong>
+              <small>CHAMPION</small>
+            </div>
+
+          </div>
+
+          <!-- Third Place -->
+          @if (players.length >= 3) {
+            <div class="winner third">
+
+              <div class="winner-avatar bronze">
+                {{ players[2].avatar }}
+              </div>
+
+              <span class="medal">🥉</span>
+
+              <h3>{{ players[2].name }}</h3>
+
+              <p>{{ players[2].score }} XP</p>
+
+              <div class="podium-block">
+                <strong>03</strong>
+                <small>THIRD</small>
+              </div>
+
+            </div>
+          }
+
+        </section>
+
+      </section>
+
+    } @else {
+
+      <!-- Empty State -->
+      <section class="empty-state">
+        <span>🏆</span>
+        <h2>Your Hall of Fame Starts Here!</h2>
+        <p>Complete your first quiz to appear on the leaderboard.</p>
+        <a href="/quiz" class="start-quiz-btn">
+          Start Your First Quiz →
+        </a>
+      </section>
+
+    }
+
+    <!-- Rankings -->
     <section class="ranking-section">
 
       <div class="ranking-heading">
+
         <div>
           <span class="eyebrow">TOP PERFORMERS</span>
           <h2>Player Rankings</h2>
+          <p>Every correct answer takes you higher!</p>
         </div>
 
-        <select (change)="changeSort($event)">
+        <select
+          class="sort-select"
+          (change)="changeSort($event)">
+
           <option value="highest">Highest Score</option>
           <option value="lowest">Lowest Score</option>
           <option value="name">Name A-Z</option>
+
         </select>
+
       </div>
 
-      <input
-        type="text"
-        class="search-box"
-        placeholder="🔍 Search players..."
-        (input)="searchPlayers($event)"
-      />
+      <!-- Search -->
+      <div class="search-wrapper">
+        <span>🔍</span>
 
+        <input
+          type="text"
+          class="search-box"
+          placeholder="Search players..."
+          (input)="searchPlayers($event)"
+        />
+      </div>
+
+      <!-- Player List -->
       <div class="player-list">
 
         @for (player of filteredPlayers; track player.name; let i = $index) {
-          <div class="player-card" [style.animation-delay]="i * 0.1 + 's'">
 
-            <div class="rank">{{ i + 1 }}</div>
+          <div
+            class="player-card"
+            [class.top-rank]="i < 3"
+            [class.rank-first]="i === 0"
+            [class.rank-second]="i === 1"
+            [class.rank-third]="i === 2"
+            [style.animation-delay]="i * 0.08 + 's'">
 
-            <div class="player-avatar">{{ player.avatar }}</div>
+            <div class="rank">
+              @if (i === 0) {
+                🥇
+              } @else if (i === 1) {
+                🥈
+              } @else if (i === 2) {
+                🥉
+              } @else {
+                {{ i + 1 }}
+              }
+            </div>
+
+            <div class="player-avatar">
+              {{ player.avatar }}
+            </div>
 
             <div class="player-info">
               <h3>{{ player.name }}</h3>
@@ -87,10 +202,11 @@
             </div>
 
           </div>
+
         }
 
-        @if (filteredPlayers.length === 0) {
-          <div class="empty-state">
+        @if (filteredPlayers.length === 0 && players.length > 0) {
+          <div class="empty-state search-empty">
             <span>🔍</span>
             <h3>No players found</h3>
             <p>Try searching with another name.</p>
@@ -102,4 +218,9 @@
     </section>
 
   </main>
+
+  <footer class="leaderboard-footer">
+    Made with 💜 for Quiz Champions
+  </footer>
+
 </div>
