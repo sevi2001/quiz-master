@@ -1,5 +1,6 @@
 
 <div class="dashboard">
+ 
 
   <!-- Animated background -->
   <div class="background-effects">
@@ -46,13 +47,15 @@
       </p>
 
       <div class="hero-buttons">
-       <a href="/quiz" class="start-btn">
+       <a
+  [href]="'/quiz-instructions?category=technology&difficulty=' + selectedDifficulty"
+  class="start-btn">
   Start Quiz <span>→</span>
 </a>
 
-        <button class="explore-btn">
-          Explore Categories
-        </button>
+        <a href="#categories" class="explore-btn">
+  Explore Categories ↓
+</a>
       </div>
 
       
@@ -128,7 +131,7 @@
   </main>
 
   <!-- Categories -->
-  <section class="categories">
+ <section class="categories" id="categories">
 
     <div class="section-heading">
       <div>
@@ -194,7 +197,7 @@
     <div class="category-grid">
       
 <a
-  [href]="'/quiz?category=technology&difficulty=' + selectedDifficulty"
+  [href]="'/quiz-instructions?category=technology&difficulty=' + selectedDifficulty"
   class="category-card">
         <div class="category-icon">💻</div>
         <h3>Technology</h3>
@@ -203,7 +206,7 @@
     </a>
 
    <a
-  [href]="'/quiz?category=science&difficulty=' + selectedDifficulty"
+  [href]="'/quiz-instructions?category=science&difficulty=' + selectedDifficulty"
   class="category-card">
         <div class="category-icon">🧪</div>
         <h3>Science</h3>
@@ -212,7 +215,7 @@
   </a>
 
     <a
-  [href]="'/quiz?category=general&difficulty=' + selectedDifficulty"
+  [href]="'/quiz-instructions?category=general&difficulty=' + selectedDifficulty"
   class="category-card">
         <div class="category-icon">🌍</div>
         <h3>General Knowledge</h3>
@@ -220,7 +223,7 @@
         <span>32 Quizzes →</span>
 </a>
 <a
-  [href]="'/quiz?category=mathematics&difficulty=' + selectedDifficulty"
+  [href]="'/quiz-instructions?category=mathematics&difficulty=' + selectedDifficulty"
   class="category-card">
         <div class="category-icon">🧮</div>
         <h3>Mathematics</h3>

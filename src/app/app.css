@@ -1,0 +1,70 @@
+.global-theme-toggle {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 9999;
+  padding: 13px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+  transition: 0.3s ease;
+}
+
+.global-theme-toggle:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.5);
+}
+
+@media (max-width: 600px) {
+  .global-theme-toggle {
+    right: 15px;
+    bottom: 15px;
+    padding: 11px 16px;
+  }
+}
+
+/* Global theme transition */
+
+body,
+button,
+input,
+select,
+textarea,
+a,
+.card {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Prevent horizontal scrolling */
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+/* Global dark mode */
+
+body.dark-mode {
+  background-color: #080812;
+  color: #f8fafc;
+}
+
+/* Theme button animation */
+
+.global-theme-toggle {
+  transition: all 0.3s ease;
+}
+
+.global-theme-toggle:hover {
+  transform: translateY(-4px) scale(1.03);
+}

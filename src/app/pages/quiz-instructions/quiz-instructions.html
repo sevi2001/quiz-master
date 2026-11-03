@@ -1,0 +1,96 @@
+
+<div class="instructions-page">
+
+  <header class="instructions-navbar">
+    <a routerLink="/" class="logo">✦ Quiz<span>Master</span></a>
+    <span class="header-badge">🎮 READY TO PLAY?</span>
+  </header>
+
+  <main class="instructions-container">
+
+    <div class="instructions-card">
+
+      <div class="trophy-icon">🏆</div>
+
+      <span class="eyebrow">BEFORE YOU BEGIN</span>
+
+      <h1>Quiz Instructions</h1>
+
+      <p class="subtitle">
+        Get ready to challenge your mind and show what you know!
+      </p>
+
+      <div class="quiz-details">
+
+        <div class="detail-box">
+          <span>📚</span>
+          <small>Category</small>
+          <strong>{{ categoryName }}</strong>
+        </div>
+
+        <div class="detail-box">
+          <span>⚡</span>
+          <small>Difficulty</small>
+          <strong>{{ difficulty | titlecase }}</strong>
+        </div>
+
+        <div class="detail-box">
+          <span>❓</span>
+          <small>Questions</small>
+          <strong>{{ questionCount }}</strong>
+        </div>
+
+        <div class="detail-box">
+          <span>⏱️</span>
+          <small>Time per question</small>
+          <strong>{{ timePerQuestion }} seconds</strong>
+        </div>
+
+      </div>
+
+      <div class="rules-section">
+        <h2>📋 Quiz Rules</h2>
+
+        <div class="rule">
+          <span>01</span>
+          <p>Read each question carefully before selecting an answer.</p>
+        </div>
+
+        <div class="rule">
+          <span>02</span>
+          <p>Choose only one answer from the available options.</p>
+        </div>
+
+        <div class="rule">
+          <span>03</span>
+          <p>Answer before the timer reaches zero.</p>
+        </div>
+
+        <div class="rule">
+          <span>04</span>
+          <p>Correct answers increase your score.</p>
+        </div>
+
+        <div class="rule">
+          <span>05</span>
+          <p>Complete all questions to see your final result.</p>
+        </div>
+      </div>
+
+      <div class="instructions-actions">
+        <button class="back-button" (click)="goBack()">
+          ← Back
+        </button>
+
+        <button class="begin-button" (click)="beginQuiz()">
+          Begin Quiz 🚀
+        </button>
+      </div>
+
+      <p class="good-luck">✨ Good luck, future Quiz Champion!</p>
+
+    </div>
+
+  </main>
+
+</div>

@@ -1,5 +1,6 @@
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { TitleCasePipe, DecimalPipe } from '@angular/common';
 
 interface Question {
@@ -22,7 +23,7 @@ interface QuizResult {
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [TitleCasePipe, DecimalPipe],
+  imports: [TitleCasePipe, DecimalPipe, RouterLink],
   templateUrl: './quiz.html',
   styleUrl: './quiz.css'
 })
@@ -180,15 +181,15 @@ export class Quiz implements OnInit, OnDestroy {
 
   // Progress percentage
   get progress(): number {
-    return (
-      ((this.currentQuestionIndex + 1) / this.questions.length) * 100
-    );
+    return this.questions.length
+      ? ((this.currentQuestionIndex + 1) / this.questions.length) * 100
+      : 0;
   }
 
   // Check answer
   get isCorrect(): boolean {
     return this.selectedAnswer ===
-      this.questions[this.currentQuestionIndex].answer;
+      this.questions[this.currentQuestionIndex]?.answer;
   }
 
   // Time limit based on difficulty
@@ -196,13 +197,10 @@ export class Quiz implements OnInit, OnDestroy {
     switch (this.difficulty) {
       case 'easy':
         return 20;
-
       case 'medium':
         return 15;
-
       case 'hard':
         return 10;
-
       default:
         return 20;
     }
@@ -215,15 +213,19 @@ export class Quiz implements OnInit, OnDestroy {
       this.route.snapshot.queryParamMap.get('category') || 'technology';
 
     const normalizedCategory =
-      category === 'general-knowledge' ? 'general' : category.toLowerCase();
+      category === 'general-knowledge'
+        ? 'general'
+        : category.toLowerCase();
 
     this.questions =
       this.questionSets[normalizedCategory] ||
       this.questionSets['technology'];
 
     this.categoryName =
-      normalizedCategory.charAt(0).toUpperCase() +
-      normalizedCategory.slice(1);
+      normalizedCategory === 'general'
+        ? 'General Knowledge'
+        : normalizedCategory.charAt(0).toUpperCase() +
+          normalizedCategory.slice(1);
 
     const urlDifficulty =
       this.route.snapshot.queryParamMap.get('difficulty');
@@ -231,14 +233,9 @@ export class Quiz implements OnInit, OnDestroy {
     const savedDifficulty =
       localStorage.getItem('quizDifficulty') || 'easy';
 
-    const selectedDifficulty =
-      urlDifficulty || savedDifficulty;
+    const selectedDifficulty = urlDifficulty || savedDifficulty;
 
-    if (
-      selectedDifficulty === 'easy' ||
-      selectedDifficulty === 'medium' ||
-      selectedDifficulty === 'hard'
-    ) {
+    if (['easy', 'medium', 'hard'].includes(selectedDifficulty)) {
       this.difficulty = selectedDifficulty;
     } else {
       this.difficulty = 'easy';
@@ -247,7 +244,6 @@ export class Quiz implements OnInit, OnDestroy {
     localStorage.setItem('quizDifficulty', this.difficulty);
 
     this.timeLeft = this.timeLimit;
-
     this.startTimer();
   }
 
@@ -260,7 +256,7 @@ export class Quiz implements OnInit, OnDestroy {
     }
   }
 
-  // Play sound effects using Web Audio API
+  // Play sound effects
   playSound(
     type: 'correct' | 'wrong' | 'timeout' | 'complete'
   ): void {
@@ -278,7 +274,7 @@ export class Quiz implements OnInit, OnDestroy {
       const context = this.audioContext;
 
       if (context.state === 'suspended') {
-        context.resume();
+        void context.resume();
       }
 
       const now = context.currentTime;
@@ -361,15 +357,16 @@ export class Quiz implements OnInit, OnDestroy {
 
     this.timerId = setInterval(() => {
 
+      if (this.completed) {
+        this.clearTimer();
+        return;
+      }
+
       if (this.timeLeft > 0) {
-
         this.timeLeft--;
-
       } else {
-
         this.playSound('timeout');
         this.nextQuestion();
-
       }
 
     }, 1000);
@@ -384,9 +381,7 @@ export class Quiz implements OnInit, OnDestroy {
 
     this.selectedAnswer = option;
 
-    if (
-      option === this.questions[this.currentQuestionIndex].answer
-    ) {
+    if (option === this.questions[this.currentQuestionIndex].answer) {
       this.playSound('correct');
     } else {
       this.playSound('wrong');
@@ -396,6 +391,10 @@ export class Quiz implements OnInit, OnDestroy {
   // Move to next question
   nextQuestion(): void {
 
+    if (this.completed) {
+      return;
+    }
+
     if (
       this.selectedAnswer === null &&
       this.timeLeft > 0
@@ -403,9 +402,7 @@ export class Quiz implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.timerId) {
-      clearInterval(this.timerId);
-    }
+    this.clearTimer();
 
     if (
       this.selectedAnswer ===
@@ -414,10 +411,7 @@ export class Quiz implements OnInit, OnDestroy {
       this.score++;
     }
 
-    if (
-      this.currentQuestionIndex <
-      this.questions.length - 1
-    ) {
+    if (this.currentQuestionIndex < this.questions.length - 1) {
 
       this.currentQuestionIndex++;
 
@@ -431,7 +425,6 @@ export class Quiz implements OnInit, OnDestroy {
 
       this.completed = true;
 
-      // Celebration sound
       this.playSound('complete');
 
       const savedResults: QuizResult[] = JSON.parse(
@@ -486,15 +479,21 @@ export class Quiz implements OnInit, OnDestroy {
     });
   }
 
+  // Clear timer safely
+  private clearTimer(): void {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+      this.timerId = undefined;
+    }
+  }
+
   // Clean up timer and audio
   ngOnDestroy(): void {
 
-    if (this.timerId) {
-      clearInterval(this.timerId);
-    }
+    this.clearTimer();
 
     if (this.audioContext) {
-      this.audioContext.close();
+      void this.audioContext.close();
     }
 
   }

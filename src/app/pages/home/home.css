@@ -734,3 +734,263 @@ html {
     grid-template-columns: 1fr;
   }
 }
+
+.theme-toggle {
+  position: fixed;
+  top: 25px;
+  right: 1px;
+  z-index: 1000;
+  padding: 12px 22px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(124,58,237,0.3);
+  transition: 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-3px);
+}
+
+@media (max-width: 600px) {
+  .theme-toggle {
+    top: 12px;
+    right: 12px;
+    padding: 9px 15px;
+  }
+}
+
+
+/* =================================
+   HOME PAGE DARK / LIGHT MODE
+================================= */
+
+/* DARK MODE */
+:host-context(body.dark-mode) .dashboard {
+  background: linear-gradient(
+    135deg,
+    #080812,
+    #151027,
+    #0b1020
+  ) !important;
+  color: #f8fafc;
+}
+
+/* Navigation */
+:host-context(body.dark-mode) .navbar {
+  background: rgba(20, 15, 35, 0.85);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* Category cards */
+:host-context(body.dark-mode) .category-card {
+  background: rgba(25, 20, 43, 0.9);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* Difficulty cards */
+:host-context(body.dark-mode) .difficulty-card {
+  background: #211a35;
+  color: white;
+  border-color: #44345f;
+}
+
+/* Selected difficulty */
+:host-context(body.dark-mode) .difficulty-card.selected {
+  background: #39245c;
+  border-color: #a78bfa;
+}
+
+/* Player profile */
+:host-context(body.dark-mode) .profile-card {
+  background: #211a35;
+  border-color: #44345f;
+}
+
+/* Profile input */
+:host-context(body.dark-mode) .profile-input-group input {
+  background: #100c20;
+  color: white;
+  border-color: #55416f;
+}
+
+/* Floating cards */
+:host-context(body.dark-mode) .floating-card {
+  background: rgba(35, 25, 55, 0.95);
+}
+
+/* Smooth transition */
+.dashboard,
+.navbar,
+.category-card,
+.difficulty-card,
+.profile-card {
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+
+/* =========================================
+   QUIZMASTER - PREMIUM WELCOME ENHANCEMENTS
+========================================= */
+
+/* Soft glowing hero background */
+.hero {
+  isolation: isolate;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Animated glowing Start Quiz button */
+.start-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-size: 200% auto;
+  animation: buttonGlow 3s ease infinite;
+}
+
+@keyframes buttonGlow {
+  0%, 100% {
+    background-position: 0% center;
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.35);
+  }
+  50% {
+    background-position: 100% center;
+    box-shadow: 0 0 35px rgba(192, 132, 252, 0.65);
+  }
+}
+
+/* Button shine effect */
+.start-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.3),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.7s ease;
+}
+
+.start-btn:hover::before {
+  left: 150%;
+}
+
+/* More depth on trophy illustration */
+.quiz-illustration {
+  box-shadow:
+    0 0 40px rgba(168, 85, 247, 0.25),
+    0 0 100px rgba(99, 102, 241, 0.2),
+    inset 0 0 35px rgba(255,255,255,0.06);
+}
+
+/* Profile card hover */
+.profile-card {
+  transition: transform 0.35s ease, border-color 0.35s ease,
+              box-shadow 0.35s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(192,132,252,0.5);
+  box-shadow: 0 12px 35px rgba(147,51,234,0.15);
+}
+
+/* Difficulty card polish */
+.difficulty-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.difficulty-card.selected {
+  box-shadow:
+    0 0 25px rgba(139,92,246,0.25),
+    inset 0 0 20px rgba(139,92,246,0.08);
+}
+
+/* Category card glass effect */
+.category-card {
+  text-decoration: none;
+  color: white;
+  backdrop-filter: blur(15px);
+}
+
+.category-card:focus-visible,
+.start-btn:focus-visible,
+.explore-btn:focus-visible,
+.difficulty-card:focus-visible {
+  outline: 2px solid #e9d5ff;
+  outline-offset: 4px;
+}
+
+/* Navbar profile button */
+.profile-btn {
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.profile-btn:hover {
+  background: rgba(192,132,252,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(168,85,247,0.25);
+}
+
+/* Responsive improvements */
+@media (max-width: 600px) {
+  .welcome-tag {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .profile-card {
+    width: 100%;
+  }
+
+  .floating-card {
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .start-btn {
+    animation: none;
+  }
+}
+
+.explore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#categories {
+  scroll-margin-top: 30px;
+}

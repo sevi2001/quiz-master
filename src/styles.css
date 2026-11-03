@@ -1,4 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+
+/* GLOBAL STYLES */
 * {
   box-sizing: border-box;
 }
@@ -10,4 +11,50 @@ html {
 body {
   margin: 0;
   background: #100c2a;
+  color: #ffffff;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* DARK MODE */
+body.dark-mode {
+  background: #100b20 !important;
+  color: #f8fafc !important;
+}
+
+/* Common backgrounds */
+body.dark-mode app-root,
+body.dark-mode .container,
+body.dark-mode main,
+body.dark-mode section {
+  color: #f8fafc;
+}
+
+/* Cards */
+body.dark-mode .card,
+body.dark-mode .stat-card,
+body.dark-mode .profile-card,
+body.dark-mode .quiz-card {
+  background: #211735 !important;
+  color: #ffffff !important;
+  border-color: #55416f !important;
+}
+
+/* Text */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode span {
+  color: #f8fafc;
+}
+
+/* Inputs */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #211735 !important;
+  color: white !important;
+  border-color: #55416f !important;
 }

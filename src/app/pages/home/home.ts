@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { Theme } from '../../services/theme';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Home implements OnInit {
 
+  exploreCategories(): void {
+  document.getElementById('categories')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+}
+
   playerName = '';
   selectedDifficulty = 'easy';
 
@@ -18,6 +26,12 @@ export class Home implements OnInit {
     this.selectedDifficulty =
       localStorage.getItem('quizDifficulty') || 'easy';
   }
+
+  constructor(public theme: Theme) {}
+
+toggleTheme(): void {
+  this.theme.toggleTheme();
+}
 
   updatePlayerName(event: Event): void {
     this.playerName = (event.target as HTMLInputElement).value;

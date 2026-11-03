@@ -1,5 +1,7 @@
+v
 <div class="result-page">
 
+  <!-- Animated Background Particles -->
   <div class="particles">
     <span>✦</span>
     <span>✨</span>
@@ -7,18 +9,34 @@
     <span>⭐</span>
     <span>✦</span>
     <span>✨</span>
+    <span>💜</span>
+    <span>✧</span>
   </div>
 
+  <!-- Navigation -->
   <nav class="result-navbar">
-    <a href="/" class="logo">✦ QuizMaster</a>
-    <span class="completed-label">✓ QUIZ COMPLETED</span>
+
+    <a href="/" class="logo">
+      <span>✦</span> Quiz<span>Master</span>
+    </a>
+
+    <span class="completed-label">
+      <span class="completed-dot">✓</span>
+      QUIZ COMPLETED
+    </span>
+
   </nav>
 
   <main class="result-container">
 
-    <div class="celebration">🏆</div>
+    <!-- Celebration -->
+    <div class="celebration">
+      🏆
+    </div>
 
-    <span class="eyebrow">YOUR RESULTS ARE HERE</span>
+    <span class="eyebrow">
+      ✨ YOUR RESULTS ARE HERE
+    </span>
 
     <h1>{{ message }}</h1>
 
@@ -26,38 +44,71 @@
       You've completed your knowledge challenge!
     </p>
 
+    <!-- Achievement -->
+    <div class="achievement-badge">
+      <span>🏅</span>
+      <strong>
+        {{ percentage >= 80 ? 'Outstanding Performance' :
+           percentage >= 60 ? 'Great Achievement' :
+           percentage >= 40 ? 'Keep Improving' :
+           'Learning Champion' }}
+      </strong>
+    </div>
+
     <!-- Quiz Information -->
     <div class="quiz-info">
 
       <div class="info-badge category-badge">
-        <span>📚</span>
+
+        <span class="info-icon">📚</span>
+
         <div>
-          <small>Category</small>
+          <small>CATEGORY</small>
           <strong>{{ categoryName }}</strong>
         </div>
+
       </div>
 
       <div class="info-badge difficulty-badge">
-        <span>⚡</span>
+
+        <span class="info-icon">⚡</span>
+
         <div>
-          <small>Difficulty</small>
+          <small>DIFFICULTY</small>
           <strong>{{ difficultyName }}</strong>
         </div>
+
       </div>
 
     </div>
 
-    <!-- Score Card -->
+    <!-- Main Score Card -->
     <section class="score-card">
 
-      <div class="score-circle" [style.--score]="percentage + '%'">
+      <span class="score-card-label">
+        YOUR PERFORMANCE
+      </span>
+
+      <!-- Animated Score Circle -->
+      <div
+        class="score-circle"
+        [style.--score]="percentage + '%'">
+
         <div class="circle-inner">
+
           <strong>{{ displayedPercentage }}%</strong>
-          <span>Your Score</span>
+
+          <span>YOUR SCORE</span>
+
         </div>
+
       </div>
 
-      <h2>{{ score }} / {{ total }}</h2>
+      <!-- Score -->
+      <h2>
+        {{ score }}
+        <span>/ {{ total }}</span>
+      </h2>
 
       <p class="score-description">
         Correct Answers
@@ -67,39 +118,60 @@
       <div class="score-stats">
 
         <div class="stat correct">
-          <span>✓</span>
+
+          <span class="stat-icon">✓</span>
+
           <strong>{{ score }}</strong>
+
           <small>Correct</small>
+
         </div>
 
         <div class="stat incorrect">
-          <span>✕</span>
+
+          <span class="stat-icon">✕</span>
+
           <strong>{{ total - score }}</strong>
+
           <small>Incorrect</small>
+
         </div>
 
         <div class="stat total">
-          <span>🎯</span>
+
+          <span class="stat-icon">🎯</span>
+
           <strong>{{ total }}</strong>
+
           <small>Total</small>
+
         </div>
 
       </div>
 
     </section>
 
-    <!-- Feedback -->
+    <!-- Performance Feedback -->
     <div class="result-message">
-      <span>💜</span>
-      {{ feedback }}
+
+      <span class="feedback-icon">💜</span>
+
+      <div>
+        <strong>Performance Feedback</strong>
+        <p>{{ feedback }}</p>
+      </div>
+
     </div>
 
-    <!-- Celebration Button -->
+    <!-- Celebration Sound -->
     <button
       type="button"
       class="celebration-btn"
       (click)="playCelebrationSound()">
-      🎵 Play Celebration
+
+      <span>🎵</span>
+      Play Celebration
+
     </button>
 
     <!-- Action Buttons -->
@@ -109,20 +181,34 @@
         type="button"
         class="retake-btn"
         (click)="retakeQuiz()">
-        ↻ Retake Quiz
+
+        <span>↻</span>
+        Retake Quiz
+
       </button>
 
       <button
         type="button"
         class="home-btn"
         (click)="goHome()">
-        ← Back to Home
+
+        <span>⌂</span>
+        Back to Home
+
       </button>
 
     </div>
 
+    <!-- Motivational Message -->
+    <div class="motivation-message">
+      <span>✨</span>
+      Every question makes you smarter. Keep going!
+      <span>✨</span>
+    </div>
+
   </main>
 
+  <!-- Footer -->
   <footer>
     Keep learning. Keep growing. Keep shining! ✨
   </footer>

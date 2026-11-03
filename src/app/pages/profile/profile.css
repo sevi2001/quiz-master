@@ -705,3 +705,125 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =================================
+   PROFILE PAGE DARK MODE
+================================= */
+
+:host-context(body.dark-mode) .profile-page {
+  background: linear-gradient(
+    135deg,
+    #080812,
+    #151027,
+    #0b1020
+  ) !important;
+  color: #f8fafc;
+}
+
+/* Navbar */
+
+:host-context(body.dark-mode) .navbar {
+  background: rgba(25, 20, 43, 0.9);
+  border-color: #44345f;
+}
+
+/* Profile Hero */
+
+:host-context(body.dark-mode) .profile-hero {
+  background: linear-gradient(
+    120deg,
+    #211a35,
+    #191329
+  );
+  border-color: #7545a5;
+}
+
+:host-context(body.dark-mode) .online-dot {
+  border-color: #211a35;
+}
+
+/* Statistics */
+
+:host-context(body.dark-mode) .stat-card {
+  background: #211a35;
+  border-color: #44345f;
+}
+
+:host-context(body.dark-mode) .stat-card:hover {
+  background: #302044;
+  border-color: #a855f7;
+}
+
+/* Content Sections */
+
+:host-context(body.dark-mode) .content-section {
+  background: rgba(33, 26, 53, 0.95);
+  border-color: #44345f;
+}
+
+/* Achievements */
+
+:host-context(body.dark-mode) .achievement-card {
+  background: #191329;
+  border-color: #44345f;
+}
+
+:host-context(body.dark-mode) .achievement-card.unlocked {
+  background: #302719;
+  border-color: #92732c;
+}
+
+:host-context(body.dark-mode) .achievement-card.locked {
+  background: #191329;
+}
+
+/* Quiz History */
+
+:host-context(body.dark-mode) .history-card {
+  background: #191329;
+  border-color: #44345f;
+}
+
+:host-context(body.dark-mode) .history-card:hover {
+  background: #302044;
+  border-color: #a855f7;
+}
+
+/* Empty History */
+
+:host-context(body.dark-mode) .empty-history {
+  background: #191329;
+  border-color: #44345f;
+}
+
+/* Buttons */
+
+:host-context(body.dark-mode) .secondary-btn {
+  background: #211a35;
+  border-color: #7545a5;
+  color: #f3e8ff;
+}
+
+/* Text */
+
+:host-context(body.dark-mode) .profile-details p,
+:host-context(body.dark-mode) .page-heading p,
+:host-context(body.dark-mode) .stat-card > span,
+:host-context(body.dark-mode) .achievement-info p,
+:host-context(body.dark-mode) .history-info p {
+  color: #d8c9ef;
+}
+
+/* Smooth transitions */
+
+.profile-page,
+.navbar,
+.profile-hero,
+.stat-card,
+.content-section,
+.achievement-card,
+.history-card,
+.empty-history,
+.secondary-btn {
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
